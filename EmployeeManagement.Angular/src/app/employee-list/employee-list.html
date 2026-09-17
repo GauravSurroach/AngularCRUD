@@ -1,0 +1,220 @@
+<div class="employee-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div class="page-title">
+      <h1>Employee Management</h1>
+      <p>Manage employees, departments and salary information</p>
+    </div>
+
+    <button type="button" (click)="openAddEmployeeModal()" class="add-btn">
+      <span class="plus-icon">+</span>
+      Add Employee
+    </button>
+
+  </div>
+
+
+  <!-- Employee Card -->
+  <div class="table-card">
+
+    <!-- Table Header -->
+    <div class="table-header">
+
+      <div>
+        <h2>Employees</h2>
+        <p>All employees in the system</p>
+      </div>
+
+      <div class="employee-count">
+        {{ employees.length }} Employees
+      </div>
+
+    </div>
+
+
+    <!-- Table -->
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <!--<th>ID</th>-->
+            <th>Employee</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Salary</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (employee of employees; track employee.id) {
+
+          <tr>
+
+            <!-- ID -->
+            <!--<td>
+              <span class="employee-id">
+                #{{ employee.id }}
+              </span>
+            </td>-->
+
+
+            <!-- Employee -->
+            <td>
+
+              <div class="employee-info">
+
+                <div class="avatar">
+                  {{ employee.name.charAt(0).toUpperCase() }}
+                </div>
+
+                <div class="employee-name">
+                  {{ employee.name }}
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- Email -->
+            <td>
+
+              <span class="email">
+                {{ employee.email }}
+              </span>
+
+            </td>
+
+
+            <!-- Department -->
+            <td>
+
+              <span class="department">
+                {{ employee.department }}
+              </span>
+
+            </td>
+
+
+            <!-- Salary -->
+            <td>
+
+              <span class="salary">
+                ₹{{ employee.salary | number:'1.0-2' }}
+              </span>
+
+            </td>
+
+
+            <!-- Actions -->
+            <td>
+
+              <div class="actions">
+
+                <button type="button"
+                        class="edit-btn"
+                        title="Edit Employee" (click)="openEditEmployeeModal(employee)">
+
+                  ✏️ Edit
+
+                </button>
+
+                <button type="button"
+                        class="delete-btn"
+                        title="Delete Employee" (click)="openDeleteModal(employee)">
+
+                  🗑️ Delete
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- Add Employee Modal -->
+  @if (isAddEmployeeModalOpen) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <app-add-employee (employeeCreated)="onEmployeeCreated($event)" (close)="closeAddEmployeeModal()">
+      </app-add-employee>
+    </div>
+  </div>
+  }
+
+  <!--Edit Employee Modal-->
+  @if (isEditEmployeeModalOpen && selectedEmployee) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+
+      <app-edit-employee [employee]="selectedEmployee" (close)="closeEditEmployeeModal()" (employeeUpdated)="onEmployeeUpdated($event)">
+      </app-edit-employee>
+
+    </div>
+  </div>
+  }
+
+
+   <!--Delete Confirmation Modal-->
+  @if (isDeleteModalOpen && employeeToDelete) {
+
+  <div class="delete-modal-overlay">
+
+    <div class="delete-modal">
+
+      <div class="delete-modal-header">
+        <h2>Delete Employee</h2>
+      </div>
+
+      <div class="delete-modal-body">
+        <p>
+          Are you sure you want to delete
+          <strong>{{ employeeToDelete.name }}</strong>?
+        </p>
+
+        <p class="warning-text">
+          This action cannot be undone.
+        </p>
+      </div>
+
+      <div class="delete-modal-footer">
+
+        <button type="button"
+                class="cancel-delete-btn" (click)="closeDeleteModal()">
+          Cancel
+        </button>
+         
+        <button type="button"
+                class="confirm-delete-btn" (click)="confirmDeleteEmployee()">
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  }
+</div>

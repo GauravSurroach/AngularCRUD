@@ -1,0 +1,86 @@
+<div class="modal-overlay">
+
+  <div class="modal-container">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+
+      <h2>Add Employee</h2>
+
+      <button type="button"
+              class="close-btn"
+              (click)="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+
+      <form (ngSubmit)="createEmployee()">
+
+        <!-- Name -->
+        <div class="form-group">
+          <label for="name">Name</label>
+
+          <input type="text"
+                 id="name"
+                 name="name"
+                 [(ngModel)]="employee.name"
+                 placeholder="Enter employee name">
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+
+          <input type="email"
+                 id="email"
+                 name="email"
+                 [(ngModel)]="employee.email"
+                 placeholder="Enter employee email">
+        </div>
+
+        <!-- Department -->
+        <div class="form-group">
+          <label for="department">Department</label>
+
+          <input type="text"
+                 id="department"
+                 name="department"
+                 [(ngModel)]="employee.department"
+                 placeholder="Enter department">
+        </div>
+
+        <!-- Salary -->
+        <div class="form-group">
+          <label for="salary">Salary</label>
+
+          <input type="number"
+                 id="salary"
+                 name="salary"
+                 [(ngModel)]="employee.salary"
+                 placeholder="Enter salary">
+        </div>
+
+        <!-- Buttons -->
+        <div class="modal-footer">
+
+          <button type="button"
+                  class="cancel-btn"
+                  (click)="closeModal()">
+            Cancel
+          </button>
+
+          <button type="submit" class="save-btn">Save Employee </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
