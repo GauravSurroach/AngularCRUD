@@ -1,7 +1,9 @@
 ﻿using EmployeeManagement.API.Data;
 using EmployeeManagement.API.Models;
+using EmployeeManagement.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace EmployeeManagement.API.Controllers
 {
@@ -10,10 +12,11 @@ namespace EmployeeManagement.API.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        public EmployeeController(AppDbContext context)
+        private readonly IKafkaProducer _kafkaProducer;
+        public EmployeeController(AppDbContext context, IKafkaProducer kafkaProducer)
         {
             _context = context;
+            _kafkaProducer = kafkaProducer;
         }
 
         // GET: api/employee
@@ -46,6 +49,15 @@ namespace EmployeeManagement.API.Controllers
             _context.Employees.Add(employee);
 
             await _context.SaveChangesAsync();
+
+            try 
+            {
+                // Publish the employee data to Kafka
+                var message = JsonSerializer.Serialize(employee);
+                await _kafkaProducer.PublishAsync(employee.Id.ToString(), message);
+            }
+            catch(Exception)
+            { }
 
             return CreatedAtAction(
                 nameof(GetEmployee),
