@@ -24,7 +24,6 @@ namespace EmployeeManagement.API.Controllers
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
             var employees = await _context.Employees.ToListAsync();
-
             return Ok(employees);
         }
 
